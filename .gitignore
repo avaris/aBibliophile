@@ -1,0 +1,11 @@
+*.pyc
+*.py~
+*.adb
+*.spec
+build
+dist
+tmp
+covers
+groupbytest
+idefixtest
+old
