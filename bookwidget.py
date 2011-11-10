@@ -95,4 +95,3 @@ class Book(QtGui.QWidget):
             self.Cover.setPixmap(QtGui.QPixmap(SqlRecord.value("cover_path")))
         else:
             self.Cover.setPixmap(QtGui.QPixmap())
-

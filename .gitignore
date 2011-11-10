@@ -2,6 +2,7 @@
 *.py~
 *.adb
 *.spec
+*.ts
 build
 dist
 tmp

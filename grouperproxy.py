@@ -1,3 +1,8 @@
+#!/usr/bin/env python
+# -.- coding: utf-8 -.-
+# Author  : Deniz Turgut
+# Created : 10.11.2011
+
 from collections import namedtuple
 import random
 
@@ -5,7 +10,6 @@ from PyQt4 import QtCore, QtGui
 
 groupItem = namedtuple("groupItem",["name","children","index"])
 rowItem = namedtuple("rowItem",["groupIndex","random"])
-
 
 class GrouperProxy(QtGui.QAbstractProxyModel):
     def __init__(self, parent=None):
