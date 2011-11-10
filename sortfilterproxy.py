@@ -6,9 +6,12 @@ class SortFilterProxy(QtGui.QSortFilterProxyModel):
         self.setSortLocaleAware(True)
         self.setSortCaseSensitivity(QtCore.Qt.CaseInsensitive)
         self.setDynamicSortFilter(True)
+        self.setFilterCaseSensitivity(QtCore.Qt.CaseInsensitive)
+
+    def setSourceModel(self, source):
+        super(SortFilterProxy, self).setSourceModel(source)
         self.sort(1)
         self.setFilterKeyColumn(1)
-        self.setFilterCaseSensitivity(QtCore.Qt.CaseInsensitive)
 
     def data(self, index, role):
         if role==QtCore.Qt.DisplayRole:

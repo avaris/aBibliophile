@@ -1,9 +1,11 @@
 # -.- coding: utf-8 -.-
 from PyQt4 import QtGui, QtCore
 
-class MyListWidgetItem(QtGui.QWidget):
-    MoveUp = QtCore.pyqtSignal(QtGui.QWidget)
-    MoveDown = QtCore.pyqtSignal(QtGui.QWidget)
+import icons
+
+class ListWidgetItem(QtGui.QWidget):
+    moveUp = QtCore.pyqtSignal(QtGui.QWidget)
+    moveDown = QtCore.pyqtSignal(QtGui.QWidget)
     
     def __init__(self,Parent,ItemText):
         QtGui.QWidget.__init__(self,Parent)
@@ -15,19 +17,19 @@ class MyListWidgetItem(QtGui.QWidget):
         self.ItemRemove.setAutoDefault(False)
         self.ItemRemove.setIcon(QtGui.QIcon(":icons/delete.ico"))
         self.ItemRemove.setFixedSize(20,20)
-        self.ItemRemove.clicked.connect(self.RemoveMe)
+        self.ItemRemove.clicked.connect(self.removeMe)
 
         self.ItemMoveUp = QtGui.QPushButton()
         self.ItemMoveUp.setAutoDefault(False)
         self.ItemMoveUp.setIcon(QtGui.QIcon(":icons/up.ico"))
         self.ItemMoveUp.setFixedSize(20,20)
-        self.ItemMoveUp.clicked.connect(self.MoveMeUp)
+        self.ItemMoveUp.clicked.connect(self.moveMeUp)
 
         self.ItemMoveDown = QtGui.QPushButton()
         self.ItemMoveDown.setAutoDefault(False)
         self.ItemMoveDown.setIcon(QtGui.QIcon(":icons/down.ico"))
         self.ItemMoveDown.setFixedSize(20,20)
-        self.ItemMoveDown.clicked.connect(self.MoveMeDown)
+        self.ItemMoveDown.clicked.connect(self.moveMeDown)
 
         WidgetLayout = QtGui.QHBoxLayout()
         WidgetLayout.setContentsMargins(3,3,3,3)
@@ -38,26 +40,26 @@ class MyListWidgetItem(QtGui.QWidget):
 
         self.setLayout(WidgetLayout)
 
-    def RemoveMe(self):
+    def removeMe(self):
         self.setParent(None)
 
-    def MoveMeUp(self):
-        self.MoveUp.emit(self)
+    def moveMeUp(self):
+        self.moveUp.emit(self)
 
-    def MoveMeDown(self):
-        self.MoveDown.emit(self)
+    def moveMeDown(self):
+        self.moveDown.emit(self)
 
-class MyListWidget(QtGui.QWidget):
+class ListWidget(QtGui.QWidget):
     def __init__(self,Parent=None):
         QtGui.QWidget.__init__(self,Parent)
 
         self.Input = QtGui.QLineEdit()
-        self.Input.returnPressed.connect(self.AddItem)
+        self.Input.returnPressed.connect(self.addItem)
         self.Add = QtGui.QPushButton()
         self.Add.setAutoDefault(False)
         self.Add.setIcon(QtGui.QIcon(":icons/add.ico"))
         self.Add.setFixedSize(20,20)
-        self.Add.clicked.connect(self.AddItem)
+        self.Add.clicked.connect(self.addItem)
         AddLayout = QtGui.QHBoxLayout()
         AddLayout.addWidget(self.Input)
         AddLayout.addWidget(self.Add)
@@ -79,29 +81,34 @@ class MyListWidget(QtGui.QWidget):
 
         self.setLayout(WidgetLayout)
 
-    def AddItem(self,Text=None):
-        if Text is None:
+    def addItem(self,Text=None):
+        if not Text:
             Text = self.Input.text()
             self.Input.setText("")
         if Text:
-            ListItem = MyListWidgetItem(self,Text)
+            ListItem = ListWidgetItem(self,Text)
             self.ItemLayout.insertWidget(self.ItemLayout.count()-1,ListItem)
-            ListItem.MoveUp.connect(self.MoveItemUp)
-            ListItem.MoveDown.connect(self.MoveItemDown)
-        
-    def GetItems(self):
-        return [unicode(self.ItemLayout.itemAt(x).widget().ItemText.text()) for x in range(self.ItemLayout.count()-1)]
+            ListItem.moveUp.connect(self.moveItemUp)
+            ListItem.moveDown.connect(self.moveItemDown)
 
-    def MoveItemUp(self,ListItem):
+    def addItems(self, items):
+        self.clear()
+        for item in items:
+            self.addItem(item)
+        
+    def getItems(self):
+        return [self.ItemLayout.itemAt(x).widget().ItemText.text() for x in range(self.ItemLayout.count()-1)]
+
+    def moveItemUp(self,ListItem):
         Index = self.ItemLayout.indexOf(ListItem)
         if Index>0:
             self.ItemLayout.insertWidget(Index-1,ListItem)
 
-    def MoveItemDown(self,ListItem):
+    def moveItemDown(self,ListItem):
         Index = self.ItemLayout.indexOf(ListItem)
         if Index<self.ItemLayout.count()-2:
             self.ItemLayout.insertWidget(Index+1,ListItem)
 
-    def Clear(self):
+    def clear(self):
         for x in range(self.ItemLayout.count()-1):
             self.ItemLayout.itemAt(0).widget().setParent(None)

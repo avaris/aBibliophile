@@ -50,9 +50,9 @@ class GrouperProxy(QtGui.QAbstractProxyModel):
             # this is a group
             return self.createIndex(row,column,self._rootItem)
         elif parent.internalPointer() == self._rootItem:
-            return self.createIndex(row,column,self._groups[parent.row()].index)
-        else:
-            return QtCore.QModelIndex()
+            if parent.row()<len(self._groups):
+                return self.createIndex(row,column,self._groups[parent.row()].index)
+        return QtCore.QModelIndex()
 
     def parent(self, index):
         parent =  index.internalPointer()
