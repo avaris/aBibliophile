@@ -66,7 +66,7 @@ class Navigation(QtGui.QWidget):
         self.SourceModel = model
         self.SourceModel.modelReset.connect(self.modelReset)
         self.SortFilterProxy.setSourceModel(model)
-        self.GrouperProxy.setSourceModel(model,2)
+        self.GrouperProxy.setSourceModel(model, None, 2, None)
         self.Tree.setModel(self.SortFilterProxy)
         self.Tree.selectionModel().currentChanged.connect(self.currentChanged_)
         self.GroupBox.setEnabled(True)
@@ -87,7 +87,7 @@ class Navigation(QtGui.QWidget):
 
     def setGroupColumn(self, index):
         self.Tree.setCurrentIndex(QtCore.QModelIndex())
-        self.GrouperProxy.groupBy(self.GroupType.itemData(index))
+        self.GrouperProxy.setGroupColumn(self.GroupType.itemData(index), '|')
     
     def hideColumns(self):
         for i in range(1,self.SortFilterProxy.columnCount()):

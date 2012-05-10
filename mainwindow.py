@@ -186,6 +186,7 @@ class MainWindow(QtGui.QMainWindow):
         record = self.SqlModel.record(row)
         EditDialog = AddEditDialog(self, record)
         if EditDialog.exec_():
+            self.Navigation.Tree.setCurrentIndex(QtCore.QModelIndex())
             self.SqlModel.setRecord(row, EditDialog.Record)
             self.SqlModel.submitAll()
 
@@ -211,7 +212,7 @@ class MainWindow(QtGui.QMainWindow):
         m = QtGui.QMessageBox(QtGui.QMessageBox.Information,
                               self.tr("About aBibliophile"),
                               self.tr("""aBibliophile
-Avaris (c) 2011
+Avaris ~ 2011-2012
 version: 0.2b
 
 This program is free software: you can redistribute it and/or modify

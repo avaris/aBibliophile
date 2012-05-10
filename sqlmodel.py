@@ -13,7 +13,7 @@ class SqlModel(QtSql.QSqlTableModel):
     def data(self, index, role):
         if role==QtCore.Qt.DisplayRole and index.column()==9:
             # Replace is_read column to string from 0/1
-            return self.tr("Read") if super(SqlModel,self).data(index,role)=="1" else self.tr("Not read")
+            return self.tr("Read") if super(SqlModel,self).data(index,role)==1 else self.tr("Not read")
         return super(SqlModel,self).data(index,role)
 
     def openDatabase(self, database_name):

@@ -79,7 +79,8 @@ class AddEditDialog(QtGui.QDialog):
         self.Record.setValue("pages",book_dict["pages"])
         self.Record.setValue("is_read",book_dict["is_read"])
         self.Record.setValue("excerpt",book_dict["excerpt"])
-        cover_path = self.Record.value("cover_path")
+
+        cover_path = self.Record.value("cover_path") if not self.Record.isNull("cover_path") else ''
         if book_dict["cover"].isEmpty():
             if cover_path:
                 QtCore.QFile.remove(cover_path)
